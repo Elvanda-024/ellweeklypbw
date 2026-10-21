@@ -1,5 +1,7 @@
+
 <?php
 
+use App\Http\Controllers\BeritaController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -39,24 +41,5 @@ Route::get('/kontak', function () {
     ]);
 });
 
-Route::get('/berita', function () use ($data_berita) {
-    return view('berita', [
-        "title" => "Berita",
-        "beritas" => $data_berita
-    ]);
-});
-
-// Routing untuk menampilkan 1 berita
-Route::get('/berita/{slug}', function ($slug) use ($data_berita) {
-
-    $berita = collect($data_berita)->firstWhere('slug', $slug);
-
-    if (!$berita) {
-        abort(404);
-    }
-
-    return view('beritatunggal', [
-        "title" => "Berita",
-        "berita" => $berita
-    ]);
-}); 
+Route::get('/berita', [BeritaController::class, 'tampilberita']);
+Route::get('/berita/{slug}', [BeritaController::class, 'tampilberitatunggal']);
